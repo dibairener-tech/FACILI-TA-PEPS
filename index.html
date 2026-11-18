@@ -57,10 +57,10 @@ footer{border-top:1px solid var(--line);padding:23px 0 30px;display:flex;justify
 <section class="section">
  <div class="section-head"><div><div class="kicker">BIBLIOTECA</div><h2>Peptídeos em destaque</h2></div><div class="section-note">Seleção inicial · cadastro em evolução</div></div>
  <div class="cards" id="compoundCards">
-  <article class="compound" data-name="Tesamorelina"><span class="card-arrow">↗</span><div class="code">PEPTÍDEO</div><h3>Tesamorelina</h3><p>Consultar ficha e referências</p></article>
-  <article class="compound" data-name="Ipamorelina"><span class="card-arrow">↗</span><div class="code">PEPTÍDEO</div><h3>Ipamorelina</h3><p>Consultar ficha e referências</p></article>
-  <article class="compound" data-name="GHK-Cu"><span class="card-arrow">↗</span><div class="code">COMPLEXO PEPTÍDICO</div><h3>GHK-Cu</h3><p>Consultar ficha e referências</p></article>
-  <article class="compound" data-name="Retatrutida"><span class="card-arrow">↗</span><div class="code">PEPTÍDEO</div><h3>Retatrutida</h3><p>Consultar ficha e referências</p></article>
+  <article class="compound" data-name="Tesamorelina" onclick="location.href=\'fichas.html#tesamorelina\'" tabindex="0" role="link"><span class="card-arrow">↗</span><div class="code">PEPTÍDEO</div><h3>Tesamorelina</h3><p>Consultar ficha e referências</p></article>
+  <article class="compound" data-name="Ipamorelina" onclick="location.href=\'fichas.html#ipamorelina\'" tabindex="0" role="link"><span class="card-arrow">↗</span><div class="code">PEPTÍDEO</div><h3>Ipamorelina</h3><p>Consultar ficha e referências</p></article>
+  <article class="compound" data-name="GHK-Cu" onclick="location.href=\'fichas.html#ghk-cu\'" tabindex="0" role="link"><span class="card-arrow">↗</span><div class="code">COMPLEXO PEPTÍDICO</div><h3>GHK-Cu</h3><p>Consultar ficha e referências</p></article>
+  <article class="compound" data-name="Retatrutida" onclick="location.href=\'fichas.html#retatrutida\'" tabindex="0" role="link"><span class="card-arrow">↗</span><div class="code">PEPTÍDEO</div><h3>Retatrutida</h3><p>Consultar ficha e referências</p></article>
  </div>
 </section>
 <aside class="notice">
@@ -68,7 +68,7 @@ footer{border-top:1px solid var(--line);padding:23px 0 30px;display:flex;justify
  <div><strong>Informação, contexto e responsabilidade</strong><p>Conteúdos sobre práticas underground, relatos e experiências serão identificados como informações não validadas. Relatos não equivalem a evidência de segurança ou eficácia. A plataforma não fornece protocolos de administração nem recomendações individuais de uso.</p></div>
 </aside>
 </main>
-<footer class="wrap"><span>© <span id="year"></span> FACILI-TA PEPS · PEPTIDE KNOWLEDGE BASE</span><span>DESENVOLVIDO POR <strong>RENER DIBAI</strong></span></footer>
+<footer class="wrap"><span>© <span id="year"></span> FACILI-TA PEPS · BASE DE CONHECIMENTO SOBRE PEPTÍDEOS</span><span>DESENVOLVIDO POR <strong>RENER DIBAI</strong></span></footer>
 <script>
 const entries = [
  {name:"Tesamorelina",aliases:["tesamorelin"]},
@@ -87,7 +87,7 @@ function renderSuggestions(){
  else matches.forEach(item=>{const el=document.createElement("div");el.className="suggestion";el.tabIndex=0;el.setAttribute("role","option");el.innerHTML='<span></span><small>ABRIR FICHA</small>';el.firstElementChild.textContent=item.name;el.addEventListener("click",()=>selectEntry(item));el.addEventListener("keydown",e=>{if(e.key==="Enter")selectEntry(item)});panel.appendChild(el)});
  panel.classList.add("open");
 }
-function selectEntry(item){input.value=item.name;panel.classList.remove("open");panel.innerHTML="";document.querySelectorAll(".compound").forEach(card=>{card.style.outline=card.dataset.name===item.name?"1px solid #b69aff":"none";});document.getElementById("compoundCards").scrollIntoView({behavior:"smooth",block:"center"});}
+function selectEntry(item){window.location.href="fichas.html#"+({"Tesamorelina":"tesamorelina","Ipamorelina":"ipamorelina","GHK-Cu":"ghk-cu","Retatrutida":"retatrutida"}[item.name]||"");}
 input.addEventListener("input",renderSuggestions);
 input.addEventListener("keydown",e=>{if(e.key==="Escape")panel.classList.remove("open");if(e.key==="Enter"){const first=panel.querySelector(".suggestion");if(first)first.click()}});
 document.addEventListener("click",e=>{if(!e.target.closest(".searchbox"))panel.classList.remove("open")});
