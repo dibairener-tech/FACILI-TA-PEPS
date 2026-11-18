@@ -54,15 +54,6 @@ footer{border-top:1px solid var(--line);padding:23px 0 30px;display:flex;justify
   <div class="float f1"><b>KNOWLEDGE</b>Informação organizada</div><div class="float f2"><b>DISCOVERY</b>Pesquisa inteligente</div><div class="float f3"><b>REFERENCE</b>Fontes e contexto</div>
  </div>
 </section>
-<section class="section">
- <div class="section-head"><div><div class="kicker">BIBLIOTECA</div><h2>Peptídeos em destaque</h2></div><div class="section-note">Seleção inicial · cadastro em evolução</div></div>
- <div class="cards" id="compoundCards">
-  <article class="compound" data-name="Tesamorelina" onclick="location.href=\'fichas.html#tesamorelina\'" tabindex="0" role="link"><span class="card-arrow">↗</span><div class="code">PEPTÍDEO</div><h3>Tesamorelina</h3><p>Consultar ficha e referências</p></article>
-  <article class="compound" data-name="Ipamorelina" onclick="location.href=\'fichas.html#ipamorelina\'" tabindex="0" role="link"><span class="card-arrow">↗</span><div class="code">PEPTÍDEO</div><h3>Ipamorelina</h3><p>Consultar ficha e referências</p></article>
-  <article class="compound" data-name="GHK-Cu" onclick="location.href=\'fichas.html#ghk-cu\'" tabindex="0" role="link"><span class="card-arrow">↗</span><div class="code">COMPLEXO PEPTÍDICO</div><h3>GHK-Cu</h3><p>Consultar ficha e referências</p></article>
-  <article class="compound" data-name="Retatrutida" onclick="location.href=\'fichas.html#retatrutida\'" tabindex="0" role="link"><span class="card-arrow">↗</span><div class="code">PEPTÍDEO</div><h3>Retatrutida</h3><p>Consultar ficha e referências</p></article>
- </div>
-</section>
 <aside class="notice">
  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg>
  <div><strong>Informação, contexto e responsabilidade</strong><p>Conteúdos sobre práticas underground, relatos e experiências serão identificados como informações não validadas. Relatos não equivalem a evidência de segurança ou eficácia. A plataforma não fornece protocolos de administração nem recomendações individuais de uso.</p></div>
@@ -71,27 +62,30 @@ footer{border-top:1px solid var(--line);padding:23px 0 30px;display:flex;justify
 <footer class="wrap"><span>© <span id="year"></span> FACILI-TA PEPS · BASE DE CONHECIMENTO SOBRE PEPTÍDEOS</span><span>DESENVOLVIDO POR <strong>RENER DIBAI</strong></span></footer>
 <script>
 const entries = [
- {name:"Tesamorelina",aliases:["tesamorelin"]},
- {name:"Ipamorelina",aliases:["ipamorelin"]},
- {name:"GHK-Cu",aliases:["ghk cu","ghk copper peptide"]},
- {name:"Retatrutida",aliases:["retatrutide"]}
+ {name:"BPC-157",aliases:["bpc157","body protection compound 157","bpc 157"],href:"bpc-157"},
+ {name:"TB-500",aliases:["tb500","thymosin beta 4","thymosin beta-4","tb 500"],href:"tb-500"},
+ {name:"Tesamorelina",aliases:["tesamorelin","tesa"],href:"tesamorelina"},
+ {name:"Ipamorelina",aliases:["ipamorelin","ipa"],href:"ipamorelina"},
+ {name:"GHK-Cu",aliases:["ghk cu","ghkcu","copper peptide","copper tripeptide-1"],href:"ghk-cu"},
+ {name:"Retatrutida",aliases:["retatrutide","reta"],href:"retatrutida"}
 ];
 const input=document.getElementById("peptideSearch");
 const panel=document.getElementById("suggestions");
 function renderSuggestions(){
  const q=input.value.trim().toLocaleLowerCase("pt-BR");
  if(!q){panel.classList.remove("open");panel.innerHTML="";return}
- const matches=entries.filter(item=>[item.name,...item.aliases].some(v=>v.toLocaleLowerCase("pt-BR").includes(q)));
+ const normalize=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("pt-BR").replace(/[^a-z0-9]+/g,"");
+ const nq=normalize(q);
+ const matches=entries.filter(item=>[item.name,...item.aliases].some(v=>normalize(v).startsWith(nq))).slice(0,8);
  panel.innerHTML="";
  if(!matches.length){panel.innerHTML='<div class="empty">Nenhum peptídeo cadastrado corresponde à busca.</div>'}
  else matches.forEach(item=>{const el=document.createElement("div");el.className="suggestion";el.tabIndex=0;el.setAttribute("role","option");el.innerHTML='<span></span><small>ABRIR FICHA</small>';el.firstElementChild.textContent=item.name;el.addEventListener("click",()=>selectEntry(item));el.addEventListener("keydown",e=>{if(e.key==="Enter")selectEntry(item)});panel.appendChild(el)});
  panel.classList.add("open");
 }
-function selectEntry(item){window.location.href="fichas.html#"+({"Tesamorelina":"tesamorelina","Ipamorelina":"ipamorelina","GHK-Cu":"ghk-cu","Retatrutida":"retatrutida"}[item.name]||"");}
+function selectEntry(item){window.location.href="fichas.html#"+item.href;}
 input.addEventListener("input",renderSuggestions);
 input.addEventListener("keydown",e=>{if(e.key==="Escape")panel.classList.remove("open");if(e.key==="Enter"){const first=panel.querySelector(".suggestion");if(first)first.click()}});
 document.addEventListener("click",e=>{if(!e.target.closest(".searchbox"))panel.classList.remove("open")});
-document.querySelectorAll(".compound").forEach(card=>{card.addEventListener("click",()=>{input.value=card.dataset.name;selectEntry(entries.find(x=>x.name===card.dataset.name))});card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();card.click()}})});
 document.getElementById("year").textContent=new Date().getFullYear();
 </script>
 </body>
