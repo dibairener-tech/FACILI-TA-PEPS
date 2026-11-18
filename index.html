@@ -91,7 +91,7 @@ function selectEntry(item){window.location.href="fichas.html#"+({"Tesamorelina":
 input.addEventListener("input",renderSuggestions);
 input.addEventListener("keydown",e=>{if(e.key==="Escape")panel.classList.remove("open");if(e.key==="Enter"){const first=panel.querySelector(".suggestion");if(first)first.click()}});
 document.addEventListener("click",e=>{if(!e.target.closest(".searchbox"))panel.classList.remove("open")});
-document.querySelectorAll(".compound").forEach(card=>card.addEventListener("click",()=>{input.value=card.dataset.name;selectEntry(entries.find(x=>x.name===card.dataset.name))}));
+document.querySelectorAll(".compound").forEach(card=>{card.addEventListener("click",()=>{input.value=card.dataset.name;selectEntry(entries.find(x=>x.name===card.dataset.name))});card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();card.click()}})});
 document.getElementById("year").textContent=new Date().getFullYear();
 </script>
 </body>
